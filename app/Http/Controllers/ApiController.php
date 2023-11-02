@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Client\Request as ClientRequest;
+use App\Http\Resources\User as UserResource;
+use App\Http\Resources\UserCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -54,5 +55,14 @@ class ApiController extends Controller
         //when uncomment below the response will be an object of user
         $response['user'] = $data;
         return response()->json($response,200);
+    }
+    //maing Api Responses
+    public function user(Request $request , $id){
+       $user =  User::find($id);
+       return new UserResource($user);
+    }
+    public function getAllUsers(){
+        $user = User::all();
+        return new UserCollection($user);
     }
 }
